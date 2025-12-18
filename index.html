@@ -2,27 +2,282 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>𝙰</title>
-  <link rel="icon" type="ícone" href="ICON.png">
-  <link rel="stylesheet" href="styles.css"/>
-</head>
+  <title>?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="img/unnamed.jpg" />
 
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .background {
+      position: fixed;
+      inset: 0;
+      background: url("img/i.jpg") no-repeat center/cover;
+      opacity: 0;
+      transition: opacity 1s linear;
+      z-index: -3;
+    }
+
+    video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      z-index: -2;
+    }
+
+    .black-screen {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: none;
+      z-index: 5;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 40px 60px;
+      border-radius: 12px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .timer {
+      font-size: 1.8rem;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .gallery {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 10;
+      padding: 60px;
+      gap: 20px;
+      overflow-y: auto;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    .gallery-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      font-size: 28px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      z-index: 6;
+    }
+
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 28px;
+      background: none;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      z-index: 11;
+    }
+
+    
+
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+    }
+  
+    .site-footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      padding: 12px 0;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      z-index: 6;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
+    }
+  </style>
+</head>
 <body>
-  <div class="container">
-    <h1>𝚠𝚊𝚒𝚝𝚒𝚗𝚐</h1>
-    <div class="playlist">
-        <iframe style="border-radius:12px" 
-        src="https://open.spotify.com/embed/playlist/3KItiCm27yPlCLa0eWoPIQ?utm_source=generator&theme=0" 
-        width="16%" 
-        height="500" 
-        frameBorder="0" 
-        allowfullscreen="" 
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-        loading="lazy">
-        </iframe>
+
+  <div class="background" id="background"></div>
+
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="video/fundo.mp4" type="video/mp4">
+  </video>
+
+  <div class="black-screen" id="blackScreen"></div>
+
+  <audio id="endSound" src="audio/final.mp3" loop preload="auto" muted></audio>
+
+  <div class="container" id="timerBox">
+    <h1>Conceito</h1>
+    <div class="timer">
+      <div><span id="days">0</span> Dias</div>
+      <div><span id="hours">0</span> Horas</div>
+      <div><span id="minutes">0</span> Min</div>
+      <div><span id="seconds">0</span> Seg</div>
     </div>
   </div>
+
+  <button id="openGallery" class="gallery-btn">ᕮ</button>
+
+  <section class="gallery" id="gallery">
+    <button id="closeGallery" class="close-btn">✕</button>
+
+   <img src="img/foto1.png"> 
+   <img src="img/foto3.jpeg"> 
+   <img src="img/foto2.png"> 
+   <img src="img/r.png"> 
+   <img src="img/j.png"> 
+   <img src="img/a.png"> 
+   <img src="img/840.png">
+   <img src="img/12.png">
+   <img src="img/120.png">
+   
+  </section>
+
+  <script>
+  const targetDate = new Date(2025, 11, 18, 20, 20, 0);
+  const startDate = new Date();
+  const totalDuration = targetDate - startDate;
+
+  const daysEl = document.getElementById("days");
+  const hoursEl = document.getElementById("hours");
+  const minutesEl = document.getElementById("minutes");
+  const secondsEl = document.getElementById("seconds");
+
+  const bg = document.getElementById("background");
+  const endSound = document.getElementById("endSound");
+  const blackScreen = document.getElementById("blackScreen");
+  const bgVideo = document.getElementById("bgVideo");
+  const gallery = document.getElementById("gallery");
+  const timerBox = document.getElementById("timerBox");
+
+  let finished = false;
+  let canPlaySound = false; 
+
+  function unlockAudioAfterFinish() {
+    if (!canPlaySound) return;
+    endSound.muted = false;
+    endSound.play().catch(() => {});
+
+    window.removeEventListener('click', unlockAudioAfterFinish);
+    window.removeEventListener('keydown', unlockAudioAfterFinish);
+    window.removeEventListener('touchstart', unlockAudioAfterFinish);
+  }
+
+  window.addEventListener('click', unlockAudioAfterFinish);
+  window.addEventListener('keydown', unlockAudioAfterFinish);
+  window.addEventListener('touchstart', unlockAudioAfterFinish);
+
+  function updateTimer() {
+    const now = new Date();
+    const distance = targetDate - now;
+
+    if (distance <= 0 && !finished) {
+      finished = true;
+      canPlaySound = true; 
+
+      daysEl.textContent = 0;
+      hoursEl.textContent = 0;
+      minutesEl.textContent = 0;
+      secondsEl.textContent = 0;
+
+      bg.style.opacity = 1;
+
+   
+      endSound.muted = false;
+      endSound.play().catch(() => {});
+
+      blackScreen.style.display = "block";
+      timerBox.style.display = "none";
+
+      setTimeout(() => {
+        blackScreen.style.display = "none";
+        bgVideo.style.display = "block";
+      }, 2000);
+
+      return;
+    }
+
+    if (distance > 0) {
+      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+      daysEl.textContent = d;
+      hoursEl.textContent = h;
+      minutesEl.textContent = m;
+      secondsEl.textContent = s;
+
+      const elapsed = totalDuration - distance;
+      const opacity = Math.min(Math.max(elapsed / totalDuration, 0), 1);
+      bg.style.opacity = opacity;
+    }
+  }
+
+  setInterval(updateTimer, 1000);
+  updateTimer();
+
+  
+  const openGalleryBtn = document.getElementById("openGallery");
+  const closeGalleryBtn = document.getElementById("closeGallery");
+
+  if (openGalleryBtn && closeGalleryBtn) {
+    openGalleryBtn.addEventListener("click", () => {
+      gallery.style.display = "grid";
+    });
+
+    closeGalleryBtn.addEventListener("click", () => {
+      gallery.style.display = "none";
+    });
+  }
+</script>
+
+  <footer class="site-footer">Se vocês me amam, obedecerão aos meus mandamentos</footer>
+
 </body>
 </html>
-
